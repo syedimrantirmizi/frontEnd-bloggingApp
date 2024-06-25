@@ -11,15 +11,11 @@ const Profile = () => {
   const [userID, setUserID] = useState(null);
   const getPosts = async (id) => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/getspecificpost/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      // console.log(response)
+      const response = await axios.get(`${BASE_URL}/getspecificpost/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       setPostData(response?.data?.data);
     } catch (error) {
       console.log(error);
@@ -33,12 +29,40 @@ const Profile = () => {
         },
       });
       setUserData(response?.data?.data);
-      setUserID(response?.data?.data._id)
+      setUserID(response?.data?.data._id);
     } catch (error) {
       console.log(error);
     }
   };
-  
+  const deletePost = async (id) => {
+    try {
+      const response = await axios.delete(`${BASE_URL}/deletepost/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      getPosts(userID);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const updatePost = async (title,desc,id) => {
+    const obj = {
+      title,
+      desc,
+    };
+    try {
+      const response = await axios.put(`${BASE_URL}/updatepost/${id}`, obj, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      console.log(response);
+      getPosts(userID);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     getUser();
     getPosts(userID);
@@ -55,7 +79,7 @@ const Profile = () => {
         rowGap={3}
       >
         {postData?.map((value, index) => {
-          console.log(value);
+          const buttons = userData?._id == value.postOwner ? true : false;
           return (
             <ActionAreaCard
               key={index}
@@ -63,6 +87,9 @@ const Profile = () => {
               desc={value.desc}
               id={value._id}
               postOwner={value.postOwner}
+              buttons={buttons}
+              deletePost= {deletePost}
+              updatePost = {updatePost}
             />
           );
         })}
