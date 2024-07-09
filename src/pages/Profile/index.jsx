@@ -36,7 +36,10 @@ const Profile = () => {
   };
   const deletePost = async (id) => {
     try {
-      const response = await axios.delete(`${BASE_URL}/deletepost/${id}`, {
+      const obj = {
+        userID: userID,
+      };
+      const response = await axios.post(`${BASE_URL}/deletepost/${id}`, obj, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -46,10 +49,11 @@ const Profile = () => {
       console.log(error);
     }
   };
-  const updatePost = async (title,desc,id) => {
+  const updatePost = async (title, desc, id) => {
     const obj = {
       title,
       desc,
+      userID,
     };
     try {
       const response = await axios.put(`${BASE_URL}/updatepost/${id}`, obj, {
@@ -88,8 +92,8 @@ const Profile = () => {
               id={value._id}
               postOwner={value.postOwner}
               buttons={buttons}
-              deletePost= {deletePost}
-              updatePost = {updatePost}
+              deletePost={deletePost}
+              updatePost={updatePost}
             />
           );
         })}

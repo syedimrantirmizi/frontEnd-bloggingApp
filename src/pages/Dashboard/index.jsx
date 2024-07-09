@@ -56,6 +56,7 @@ const Dashboard = () => {
     const obj = {
       title,
       desc,
+      userID: userData?.data?.data._id,
     };
     try {
       const response = await axios.post(`${BASE_URL}/createpost`, obj, {
@@ -63,14 +64,13 @@ const Dashboard = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response);
       getPosts();
-      handleClose()
+      handleClose();
     } catch (error) {
       console.log(error);
     }
   };
-  
+  console.log(userData);
   useEffect(() => {
     getPosts();
     getUser();
