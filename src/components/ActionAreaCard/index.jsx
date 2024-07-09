@@ -7,7 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import { BASE_URL } from "../../../config";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ActionAreaCard({
   title,
@@ -15,13 +15,32 @@ export default function ActionAreaCard({
   id,
   postOwner,
   buttons = null,
-  deletePost,updatePost
+  deletePost,
+  updatePost,
 }) {
   const [newTitle, setnewTitle] = useState(null);
   const [newDesc, setnewDesc] = useState(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [postOwnerData, setPostOwnerData] = useState(null);
+  const getPostOwner = async () => {
+    try {
+      const obj = { _id: postOwner };
+      const response = await axios.post(`${BASE_URL}/getpostowner`, obj, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setPostOwnerData(response?.data?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getPostOwner();
+  }, []);
+
   const style = {
     position: "absolute",
     top: "50%",
@@ -37,11 +56,13 @@ export default function ActionAreaCard({
     gap: "20px",
     p: 4,
   };
-
   return (
-    <Card sx={{ minWidth: 345 }} id={id} postowner={postOwner}>
+    <Card sx={{ minWidth: 500, minheight: 200 }} id={id} postowner={postOwner}>
       <CardActionArea sx={{ p: "10px" }}>
         <CardContent>
+          <Typography variant="body2" color="initial" sx={{ paddingBottom: 3 }}>
+            {postOwnerData ? postOwnerData?.name : "Unavailable"}
+          </Typography>
           <Typography gutterBottom variant="h5" component="div">
             {title}
           </Typography>
@@ -90,7 +111,14 @@ export default function ActionAreaCard({
                     setnewDesc(e.target.value);
                   }}
                 />
-                <Button variant="contained" onClick={()=>{updatePost(newTitle,newDesc,id)}}>Edit Post</Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    updatePost(newTitle, newDesc, id);
+                  }}
+                >
+                  Edit Post
+                </Button>
               </Box>
             </Modal>
           </Box>

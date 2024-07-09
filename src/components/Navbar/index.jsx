@@ -40,11 +40,15 @@ function Navbar({ id }) {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1,cursor: "pointer" }} onClick={() => {
+              navigator("/dashboard");
+            }} />
           <Typography
             variant="h6"
             noWrap
-            component="a"
+            onClick={() => {
+              navigator("/dashboard");
+            }}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -53,6 +57,7 @@ function Navbar({ id }) {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              cursor: "pointer"
             }}
           >
             BLOG APP
@@ -120,12 +125,15 @@ function Navbar({ id }) {
               })}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1,cursor: "pointer" }} onClick={() => {
+              navigator("/dashboard");
+            }} />
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+            onClick={() => {
+              navigator("/dashboard");
+            }}
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -135,6 +143,7 @@ function Navbar({ id }) {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              cursor: "pointer"
             }}
           >
             BLOG APP
@@ -177,7 +186,7 @@ function Navbar({ id }) {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" src="" />
               </IconButton>
             </Tooltip>
             <Menu

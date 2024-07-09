@@ -7,16 +7,24 @@ import Dashboard from "./pages/Dashboard";
 import { Bounce, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Otp from "./pages/Otp";
+import Account from "./pages/Account";
+import Authroutes from "./routes/Authroutes";
+import Protectedroutes from "./routes/Protectedroutes";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route index element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/otp" element={<Otp />} />
+        <Route element={<Authroutes />}>
+          <Route index element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+        </Route>
+        <Route element={<Protectedroutes />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/otp" element={<Otp />} />
+          <Route path="/account" element={<Account />} />
+        </Route>
       </Routes>
       <ToastContainer
         position="top-right"
